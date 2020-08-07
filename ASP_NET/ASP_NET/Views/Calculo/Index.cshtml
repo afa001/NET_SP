@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ASP_NET.Models.Calculo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear", "Calcular")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UsuarioId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Respuesta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaHora)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (System.Data.DataRow calculo in ViewBag.emp.Rows)
+    {
+        <tr>
+            <td>
+                @calculo["UsuarioId"]
+            </td>
+            <td>
+                @calculo["Respuesta"]
+            </td>
+            <td>
+                @calculo["FechaHora"]
+            </td>
+            <td>
+                @Html.ActionLink("Eliminar", "Delete", new { id = @calculo["Id"] })
+            </td>
+        </tr>
+    }
+
+</table>

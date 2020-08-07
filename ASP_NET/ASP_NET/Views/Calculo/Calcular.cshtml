@@ -1,0 +1,64 @@
+﻿@model ASP_NET.ViewModel.Operacion
+
+@{
+    ViewBag.Title = "Calcular";
+}
+
+<h2>Calcular</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Operacion</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Usuario, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Usuario, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Usuario, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Limite, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Limite, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Limite, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Resultado, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Resultado, new { @class = "form-control", disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Resultado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Calcular" class="btn btn-default" />
+        </div>
+    </div>
+
+    @*<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+            The answer is:
+            <em><%= Html.DisplayForModel() %></em>
+        </asp:Content>*@
+
+    @*<div id="wrap" class='@(Request.QueryString["suma"]!=null ? Request.QueryString["suma"].ToString() : Request.QueryString["suma"].ToString())'> </div>*@
+</div>
+
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
