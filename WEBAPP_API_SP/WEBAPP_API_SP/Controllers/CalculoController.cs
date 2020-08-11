@@ -3,38 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using WEBAPP_API_SP.Helper;
 using WEBAPP_API_SP.Models;
 
 namespace WEBAPP_API_SP.Controllers
 {
     public class CalculoController : Controller
     {
-        Service s = new Service();
-
         // GET: Calculo
-        public async Task<ActionResult> Index(string usuario)
+        public ActionResult Index ()
         {
-            List<Calculo> calculos = new List<Calculo>();
-            HttpClient client = s.Initial();
-            HttpResponseMessage response;
-            response = await client.GetAsync("api/Calculo");
-
-            //validate parameter tipo
-            if (!String.IsNullOrEmpty(usuario))
-            {
-                response = await client.GetAsync("api/Calculo/?usuario=" + usuario.ToString());
-            }
-
-            //validate api response
-            if (response.IsSuccessStatusCode)
-            {
-                var results = response.Content.ReadAsStringAsync().Result;
-                calculos = JsonConvert.DeserializeObject<List<Calculo>>(results);
-            }
+            IEnumerable<Calculo> calculos;
+            HttpResponseMessage response = GlobalVariables.webapiClient.GetAsync("Calculo").Result;
+            calculos = response.Content.ReadAsAsync<IEnumerable<Calculo>>().Result;
 
             return View(calculos);
         }
@@ -52,9 +34,7 @@ namespace WEBAPP_API_SP.Controllers
             try
             {
                 // TODO: Add insert logic here
-                HttpClient client = s.Initial();
-
-                HttpResponseMessage response = client.PostAsJsonAsync("api/Calculo", calculo).Result;
+                HttpResponseMessage response = GlobalVariables.webapiClient.PostAsJsonAsync("Calculo", calculo).Result;
                 return RedirectToAction("Index");
             }
             catch
@@ -64,19 +44,19 @@ namespace WEBAPP_API_SP.Controllers
         }
 
         // GET: Calculo/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var c = new Calculo();
-            HttpClient client = s.Initial();
-            HttpResponseMessage res = await client.GetAsync("api/Calculo/" + id);
+            //var c = new Calculo();
+            //HttpClient client = s.Initial();
+            //HttpResponseMessage res = await client.GetAsync("Calculo/" + id);
 
-            if (res.IsSuccessStatusCode)
-            {
-                var results = res.Content.ReadAsStringAsync().Result;
-                c = JsonConvert.DeserializeObject<Calculo>(results);
-            }
+            //if (res.IsSuccessStatusCode)
+            //{
+            //    var results = res.Content.ReadAsStringAsync().Result;
+            //    c = JsonConvert.DeserializeObject<Calculo>(results);
+            //}
 
-            return View(c);
+            return View();
         }
 
         // POST: Calculo/Edit/5
@@ -86,8 +66,8 @@ namespace WEBAPP_API_SP.Controllers
             try
             {
                 // TODO: Add update logic here
-                HttpClient client = s.Initial();
-                HttpResponseMessage response = client.PutAsJsonAsync("api/Calculo/" + calculo.Id, calculo).Result;
+                //HttpClient client = s.Initial();
+                //HttpResponseMessage response = client.PutAsJsonAsync("Calculo/" + calculo.Id, calculo).Result;
 
                 return RedirectToAction("Index");
             }
@@ -98,43 +78,22 @@ namespace WEBAPP_API_SP.Controllers
         }
 
         // GET: Calculo/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var c = new Calculo();
-
-            try
-            {
-                HttpClient client = s.Initial();
-                HttpResponseMessage res = await client.GetAsync("api/Calculo/" + id);
-
-                if (res.IsSuccessStatusCode)
-                {
-                    var results = res.Content.ReadAsStringAsync().Result;
-                    c = JsonConvert.DeserializeObject<Calculo>(results);
-                }
-                return View(c);
-
-            }
-            catch (Exception)
-            {
-
-                return View(c);
-            }
+            
+            HttpResponseMessage response = GlobalVariables.webapiClient.GetAsync("Calculo/" + id.ToString()).Result;
+            Calculo c = response.Content.ReadAsAsync<Calculo>().Result;
+            return View(c);
         }
 
         // POST: Calculo/Delete/5
         [HttpPost]
-        public async Task<ActionResult> Delete(int id, Calculo calculo)
+        public ActionResult Delete(int id, Calculo calculo)
         {
             try
             {
                 // TODO: Add delete logic here
-                HttpClient client = s.Initial();
-                HttpResponseMessage response = await client.DeleteAsync("api/Calculo/" + id);
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                }
+                HttpResponseMessage response = GlobalVariables.webapiClient.DeleteAsync("Calculo/" + id.ToString()).Result;
                 return RedirectToAction("Index");
             }
             catch

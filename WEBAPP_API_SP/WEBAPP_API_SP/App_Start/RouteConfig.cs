@@ -16,7 +16,7 @@ namespace WEBAPP_API_SP
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Calculo", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
