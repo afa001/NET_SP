@@ -12,6 +12,6 @@ namespace WEBAPP_API_SP.Models
         public System.DateTime FechaHora { get; set; }
         public int UsuarioId { get; set; }
 
-        public  Usuario Usuario { get; set; }
+        //public  Usuario Usuario { get; set; }
     }
 }

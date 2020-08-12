@@ -81,9 +81,11 @@ namespace WEBAPP_API_SP.Controllers
         public ActionResult Delete(int id)
         {
             
-            HttpResponseMessage response = GlobalVariables.webapiClient.GetAsync("Calculo/" + id.ToString()).Result;
-            Calculo c = response.Content.ReadAsAsync<Calculo>().Result;
-            return View(c);
+            HttpResponseMessage response = GlobalVariables.webapiClient.GetAsync("Calculo/" + id).Result;
+            List<Calculo> calculos = response.Content.ReadAsAsync<List<Calculo>>().Result;
+            var calculo = calculos[0];
+
+            return View(calculo);
         }
 
         // POST: Calculo/Delete/5
@@ -93,7 +95,13 @@ namespace WEBAPP_API_SP.Controllers
             try
             {
                 // TODO: Add delete logic here
-                HttpResponseMessage response = GlobalVariables.webapiClient.DeleteAsync("Calculo/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVariables.webapiClient.DeleteAsync("Calculo/" + calculo.Id).Result;
+
+                if (response.Equals("404"))
+                {
+                    return View();
+                }
+
                 return RedirectToAction("Index");
             }
             catch
